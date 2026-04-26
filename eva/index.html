@@ -60,50 +60,9 @@
         .border-double-gold {
             border: 12px double var(--primary-gold);
         }
-        .music-control {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 100;
-            background: white;
-            padding: 14px;
-            border-radius: 50%;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .music-control:hover { transform: scale(1.1); }
-        .music-control.paused { opacity: 0.5; }
-        .toast-music {
-            position: fixed;
-            bottom: 100px;
-            right: 25px;
-            background: #2d4a22;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 12px;
-            z-index: 99;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            pointer-events: none;
-        }
-        .toast-music.show { opacity: 1; }
     </style>
 </head>
 <body class="bg-pattern">
-
-    <div id="toastMusic" class="toast-music">🎵 Selamat datang di undangan Eva ✨</div>
-
-    <audio id="bg-music" loop>
-        <source src="https://raw.githubusercontent.com/ReiMrtn/foto-undangan-eva/main/cinderella-dream.mp3" type="audio/mpeg">
-    </audio>
-
-    <div class="music-control" id="musicToggle">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-yellow-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-        </svg>
-    </div>
 
     <div class="min-h-screen flex items-center justify-center py-16 px-4 relative overflow-hidden">
         
@@ -226,56 +185,6 @@
             setTimeout(() => petal.remove(), duration * 1000);
         }
         setInterval(createPetal, 450);
-
-        const music = document.getElementById('bg-music');
-        const musicToggle = document.getElementById('musicToggle');
-        const toast = document.getElementById('toastMusic');
-        let isPlaying = false;
-        let musicStarted = false;
-
-        function showToast(msg) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
-        }
-
-        function startMusic() {
-            if (!isPlaying && !musicStarted) {
-                music.play().then(() => {
-                    isPlaying = true;
-                    musicStarted = true;
-                    musicToggle.classList.remove('paused');
-                    showToast('🎵 Selamat datang di undangan Eva ✨');
-                }).catch(err => {
-                    showToast('🎵 Klik tombol musik untuk memutar lagu');
-                });
-            }
-        }
-
-        document.body.addEventListener('click', function initMusic() {
-            startMusic();
-            document.body.removeEventListener('click', initMusic);
-        }, { once: true });
-
-        musicToggle.addEventListener('click', function(e) {
-            e.stopPropagation();
-            if (isPlaying) {
-                music.pause();
-                isPlaying = false;
-                musicToggle.classList.add('paused');
-                showToast('⏸️ Musik dijeda');
-            } else {
-                music.play().then(() => {
-                    isPlaying = true;
-                    musicToggle.classList.remove('paused');
-                    showToast('🎵 Musik dilanjutkan...');
-                }).catch(() => showToast('⚠️ Klik lagi untuk memutar'));
-            }
-        });
-
-        setTimeout(() => {
-            if (!musicStarted) showToast('✨ Klik di mana saja untuk membuka undangan ✨');
-        }, 500);
     </script>
 </body>
 </html>
